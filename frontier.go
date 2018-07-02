@@ -33,10 +33,12 @@ func New(t http.RoundTripper, front, addr string) *Frontier {
 func (fr *Frontier) RoundTrip(r *http.Request) (*http.Response, error) {
 	authority := r.URL.Host
 	r.Host = authority
-	r.URL.Host = fr.front
+	if fr.front != "" {
+		r.URL.Host = fr.front
+	}
 	if fr.addr != "" {
 		r.URL.Host = fr.addr
-		if r.URL.Scheme == "https" {
+		if r.URL.Scheme == "https" && fr.front != "" {
 			t, ok := fr.transport.(*http.Transport)
 			if ok {
 				if t.TLSClientConfig == nil {
