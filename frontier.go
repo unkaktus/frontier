@@ -20,12 +20,16 @@ type Frontier struct {
 
 // New creates a Frontier that sets SNI of requests to front
 // and network address to call to addr (or front if addr is empty).
-// Frontier roundtrips all requests through t.
+// Frontier roundtrips all requests through t, or though
+// http.DefaultTransport if t is nil.
 func New(t http.RoundTripper, front, addr string) *Frontier {
 	fr := &Frontier{
 		transport: t,
 		front:     front,
 		addr:      addr,
+	}
+	if fr.transport == nil {
+		fr.transport = http.DefaultTransport
 	}
 	return fr
 }
