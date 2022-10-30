@@ -14,7 +14,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/nogoegst/frontier"
+	"github.com/unkaktus/frontier"
 )
 
 func main() {
